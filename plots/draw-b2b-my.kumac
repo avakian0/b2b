@@ -1,0 +1,129 @@
+dir=/cache/mss/home/avakian/physana/w9newssa/
+*chain rho [dir]kokopipe16.1-151.hbook [dir]kokopipe16.151-300.hbook [dir]kokopipe16.301-450.hbook [dir]kokopipe16.451-580.hbook 
+exec ~/set
+set xwin 3
+set xlab 2.2
+opt stat
+
+averpol=0.7
+errco=1/[averpol]
+
+set dmod 1
+mm=0.77
+dmm=0.3
+pimmav=2.0
+dpimm=2.0
+numz=8
+numx=5
+numpt=9
+nummx=10
+zmin=0.4
+zmax=0.7
+xmin=0.1
+xmax=0.6
+ptmin=0.0
+ptmax=0.65
+pimxmas=0.05
+protxmas=0.8
+mxmax=1.0
+pipmax=2.0
+numf=36
+*
+h/del *
+vect/del *
+* phidist
+fmin=0
+fmax=6.283
+*nt/cut $1 npro=1&&npip=1&&nele=1&&elee>0.8&&protmpi>[pimxmas]&&protm>[protxmas]&&daccepte16e.f=1&&ptrann.f(1,5.754)>0&&ptrann.f(4,5.754)<0
+*nt/cut $5 pipmx>[pipmax]
+*nt/cut $2 pipmx>[pipmax]&&[zmin]<pipe/(5.754-elee)<[zmax]
+*nt/cut $3 pipmx>[pipmax]&&[zmin]<pipe/(5.754-elee)<[zmax]
+*nt/cut $4 0.4<pipe/(5.754-elee)<0.7
+
+ddir=/group/gpd/sidis/pionse16/
+vect/read z,sigz,errz,sz,s2z az-dep.n[numz].epr0.8.pipmx.gt.[pipmax].protmpi.gt.[pimxmas].dat 
+vect/read pt,sigpt,errpt,spt,s2pt aptpt-dep.n[numpt].epr0.8.pipmx.gt.[pipmax].protmpi.gt.[pimxmas].z[zmin]-[zmax].dat  
+vect/read x,sigx,errx,sx,s2x ax-dep.n[numx].epr0.8.pipmx.gt.[pipmax].protmpi.gt.[pimxmas].z[zmin]-[zmax].dat  
+vect/read mx,sigmx,errmx,smx,s2mx amx-dep.n[nummx].epr0.8.pipmx.gt.[pipmax].protmpi.gt.[pimxmas].z[zmin]-[zmax].dat  
+vect/crea pts(4) R 0.03 0.09 0.16 0.36
+vect/crea as(4) R 0.0015 0.0 -0.05 -0.12
+vect/crea es(4) R 0.002 0.003 0.005 0.01
+
+* read Silvia's stuff
+vect/read spt,espt,ssigpt,serrpt  dependence_e1f_pt.dat
+vect/read sx,serrx,ssigx,serrx dependence_e1f_xb.dat
+vect/read sz,serrz,ssigz,serrz dependence_e1f_z.dat
+vect/read smx,serrmx,ssigmx,serrmx dependence_e1f_mx.dat
+f66 dr.b2b.pip-z-bin[numf].z[zmin]-[zmax]-x[xmin]-[xmax]-pt[ptmin]-[ptmax].min[pipmax].ps
+m66
+zone 1 1
+null 0.25 0.8 -0.05 0.15
+set pmci 4
+set mtyp 20
+*hi/pl 1101 es
+set pmci 4
+/GRAPHICS/HPLOT/ERRORS  $sigma(z) sigz  ? errz [numz] '21' '0.28'
+*/GRAPHICS/HPLOT/ERRORS  $sigma(sz) ssigz  ? serrz [numz] '20' '0.28'
+*key 0.4 0.12 20
+*itx 0.42 0.12 e1f
+key 0.4 0.1 21
+itx 0.42 0.1 'CLAS(5.725 GeV)'
+set dmod 2
+/GRAPHICS/PRIMITIVES/LINE '0.25' '0' '0.8' '0'
+set dmod 1
+atit z  A?LU!
+text 0.5 0.13  'CLAS preliminary' 0.5
+c66
+wait
+f66 dr.b2b.pip-pt-bin[numf].z[zmin]-[zmax]-x[xmin]-[xmax]-pt[ptmin]-[ptmax].min[pipmax].ps
+m66
+
+null 0.0 0.5 -0.2 0.02
+set pmci 4
+set mtyp 20
+*hi/pl 1102 es
+set pmci 4
+/GRAPHICS/HPLOT/ERRORS   $sigma(pt) sigpt  ? errpt [numpt] '21' '0.28'
+set pmci 4
+*/GRAPHICS/HPLOT/ERRORS   $sigma(spt) ssigpt  ? $sigma(1.4*serrpt) [numpt] '20' '0.28'
+*/GRAPHICS/HPLOT/ERRORS   $sigma(pts) as  ? $sigma(1.4*es) 4 '25' '0.2'
+atit P?T[p]!P?Tp! A?LU!
+*key 0.05 -0.125 20
+*itx 0.07 -0.125 e1f
+key 0.05 -0.145 21
+itx 0.07 -0.145 'CLAS(5.725 GeV)'
+*set pass 7
+text 0.05 -0.178  'CLAS preliminary' 0.5
+c66
+wait
+
+
+f66 dr.b2b.pip-xf-bin[numf]-noexc-acc-xm-aluvsmmas-new-dsin2-z[zmin]-[zmax]-x[xmin]-[xmax]-pt[ptmin]-[ptmax].min[pipmax].ps
+m66
+
+null 0.1 0.65 -0.08 0.02
+set pmci 4
+set mtyp 20
+*hi/pl 1103 es
+set pmci 4
+/GRAPHICS/HPLOT/ERRORS   $sigma(x)  sigx  ? errx [numx] '21' '0.28'
+*/GRAPHICS/HPLOT/ERRORS   $sigma(sx)  ssigx  ? serrx [numx] '20' '0.28'
+*key 0.12 -0.06 20
+*itx 0.14 -0.06 e1f
+key 0.12 -0.07 21
+itx 0.14 -0.07 'CLAS(5.725 GeV)'
+text 0.3 0.01  'CLAS preliminary' 0.5
+atit x A?LU!
+c66
+wait
+f66 dr.b2b.pip-mx-bin[numf]-noexc-acc-xm-aluvsmmas-new-dsin2-z[zmin]-[zmax]-x[xmin]-[xmax]-pt[ptmin]-[ptmax].min[pipmax].ps
+m66
+null 0.9 5.0 -0.075 0.05
+set pmci 4
+set mtyp 20
+*hi/pl 1104 es
+set pmci 2
+/GRAPHICS/HPLOT/ERRORS   $sigma(mx+0.1) sigmx  ? errmx [nummx] '21' '0.28'
+/GRAPHICS/HPLOT/ERRORS   $sigma(smx+0.1) ssigmx  ? serrmx 10 '20' '0.28'
+atit M?X! 
+c66

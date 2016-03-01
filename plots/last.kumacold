@@ -1,0 +1,16 @@
+*** Begin of history file: Thu Dec 24 10:01:00 2015
+vect/prin mx
+/GRAPHICS/HPLOT/ERRORS   $sigma(smx+0.1) ssigmx  ? serrmx 10 '20' '0.28'
+vect/prin smx
+vect/prin sx
+vect/prin x
+vect/prin z
+vect/prin sigz
+vect/prin errz
+line
+/GRAPHICS/PRIMITIVES/LINE '0' '0.25' '0.0' '0.8'
+dline
+vect/prin x
+vect/prin xx
+vect/prin sx
+*** End   of history file: Thu Dec 24 10:27:21 2015
